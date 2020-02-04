@@ -1,8 +1,10 @@
 const AuthenticationController = require('../controllers')
   .AuthenticationController;
+const AccountController = require('../controllers').AccountController;
 
 var router = require('express').Router();
 
+router.post('/sign-up', AccountController.register);
 router.post('/login', AuthenticationController.authenticate);
 router.post(
   '/login-with-token',
