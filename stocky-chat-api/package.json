@@ -1,11 +1,12 @@
 {
-  "name": "stocky-chat",
+  "name": "stocky-chat-api",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
@@ -17,6 +18,7 @@
     "pg": "^7.11.0",
     "pg-hstore": "^2.3.2",
     "sequelize": "^5.8.6",
+    "socket.io": "^2.3.0",
     "ts-md5": "^1.2.4"
   },
   "devDependencies": {}

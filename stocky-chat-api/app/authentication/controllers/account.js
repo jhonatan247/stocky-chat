@@ -23,7 +23,10 @@ function validateUserRequiredParameters(user) {
   if (!user.email || user.email == '') {
     throw new Error('email parameter is required');
   }
-  if (!user.password || user.password.length < 5) {
+  if (!user.password) {
     throw new Error('password parameter is required');
+  }
+  if (user.password.length < 6) {
+    throw new Error('password must have more than 5 characters');
   }
 }

@@ -10,38 +10,11 @@ module.exports.build = DataTypes => {
     },
     name: {
       allowNull: false,
-      validate: {
-        notEmpty: true
-      },
-      type: DataTypes.STRING
-    },
-    email: {
-      allowNull: false,
       unique: true,
       validate: {
-        notEmpty: true,
-        isEmail: true
-      },
-      type: DataTypes.STRING
-    },
-    encryptedPassword: {
-      allowNull: false,
-      validate: {
         notEmpty: true
       },
       type: DataTypes.STRING
-    },
-    salt: {
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      },
-      type: DataTypes.STRING
-    },
-    token: {
-      allowNull: true,
-      unique: true,
-      type: DataTypes.STRING(1000)
     },
     status: {
       allowNull: false,

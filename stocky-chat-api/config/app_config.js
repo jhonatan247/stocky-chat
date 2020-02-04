@@ -4,6 +4,5 @@ module.exports = {
     origin: 'front-url',
     optionsSuccessStatus: 200
   },
-  timeToExpireSessionInHours: '1h',
-  maxInactivityTimeInMinutes: 5
+  timeToExpireSessionInHours: '1h'
 };

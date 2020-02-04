@@ -6,7 +6,7 @@ module.exports.authorize = async (req, res, next) => {
     let authorization =
       req.headers['x-access-token'] || req.headers['authorization'];
     validateAuthorizationHeader(authorization);
-    await AuthenticationRepository.checkToken(token);
+    const decoded = await AuthenticationRepository.checkToken(authorization);
     req.decoded = decoded;
     next();
   } catch (error) {
@@ -22,7 +22,9 @@ module.exports.authenticateWithToken = async (req, res) => {
     let authorization =
       req.headers['x-access-token'] || req.headers['authorization'];
     validateAuthorizationHeader(authorization);
-    await AuthenticationRepository.checkToken(token);
+    const accountData = await AuthenticationRepository.checkToken(
+      authorization
+    );
     res.json({
       success: true,
       message: 'authentication successful',
@@ -44,8 +46,8 @@ function validateAuthorizationHeader(authorization) {
 
 module.exports.authenticate = async (req, res) => {
   try {
-    validateLoginParameters(req.body);
-    await AuthenticationRepository.createToken(req.body);
+    validateLoginRequiredParameters(req.body);
+    const accountData = await AuthenticationRepository.createToken(req.body);
     res.json({
       success: true,
       message: 'authentication successful',
@@ -59,7 +61,7 @@ module.exports.authenticate = async (req, res) => {
   }
 };
 
-function validateLoginParameters(login) {
+function validateLoginRequiredParameters(login) {
   if (!login.email) {
     throw new Error('email parameter is required');
   }

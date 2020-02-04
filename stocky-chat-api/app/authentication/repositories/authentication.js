@@ -3,9 +3,11 @@ let AccountRepository = require('./account');
 
 module.exports.checkToken = async function(token) {
   let decodedToken = CryptographyAssistant.getTokenInformation(token);
-  let account = await AccountRepository.findByEmail(decodedToken.email);
-  let isValid = token == account.token;
 
+  let account = await AccountRepository.findByEmail(decodedToken.email);
+  if (!account) throw Error('user does not exist');
+
+  let isValid = token == account.token;
   if (!isValid) throw Error('token unauthorized');
 
   return getPublicAccountData(account);

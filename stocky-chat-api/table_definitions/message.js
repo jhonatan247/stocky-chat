@@ -8,40 +8,28 @@ module.exports.build = DataTypes => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    name: {
+    message: {
       allowNull: false,
       validate: {
         notEmpty: true
       },
       type: DataTypes.STRING
     },
-    email: {
+    owner: {
       allowNull: false,
-      unique: true,
-      validate: {
-        notEmpty: true,
-        isEmail: true
+      references: {
+        model: 'Accounts',
+        key: 'id'
       },
-      type: DataTypes.STRING
+      type: DataTypes.INTEGER
     },
-    encryptedPassword: {
+    chatRoom: {
       allowNull: false,
-      validate: {
-        notEmpty: true
+      references: {
+        model: 'ChatRooms',
+        key: 'id'
       },
-      type: DataTypes.STRING
-    },
-    salt: {
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      },
-      type: DataTypes.STRING
-    },
-    token: {
-      allowNull: true,
-      unique: true,
-      type: DataTypes.STRING(1000)
+      type: DataTypes.INTEGER
     },
     status: {
       allowNull: false,
