@@ -5,6 +5,7 @@ export const MainChatRoomsContainer = styled.div`
   grid-row: 2/12;
   background: rgba(0, 0, 0, 0.1);
   position: relative;
+  overflow: scroll;
 `;
 
 export const TitleBar = styled.div`
@@ -32,11 +33,11 @@ export const CreateNewRoomButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   position: absolute;
-  bottom: 5%;
+  bottom: 8%;
 `;
 
 export const CreateNewRoomButton = styled.div`
-  width: 80%;
+  width: 20%;
   height: 2rem;
   background: orange;
   display: flex;
@@ -44,9 +45,9 @@ export const CreateNewRoomButton = styled.div`
   align-items: center;
   justify-self: center;
   padding: 1em;
-  position: sticky;
+  position: fixed;
 
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
   cursor: pointer;
 `;
 
@@ -54,4 +55,5 @@ export const ChatRoomsListContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 5em;
 `;

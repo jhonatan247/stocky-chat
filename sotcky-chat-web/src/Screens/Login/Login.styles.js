@@ -24,7 +24,7 @@ export const Title = styled.h2`
   align-items: center;
 `;
 
-export const MarkText = styled.h4`
+export const MarkText = styled.p`
   color: white;
   padding: 0 0.4em;
   background: orange;
