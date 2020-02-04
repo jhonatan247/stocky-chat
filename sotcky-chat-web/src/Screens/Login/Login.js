@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Input } from 'antd';
 import * as st from './Login.styles';
 import Axios from 'axios';
@@ -13,21 +13,36 @@ export const Login = () => {
   });
   const [endpoint_login] = useState('http://192.168.0.14:3000/api/auth/login/');
 
-  const LogIn = () => {
+  useEffect(() => {
+    let currentSessionPassword = localStorage.getItem('currentSessionPassword');
+    let currentSessionEmail = localStorage.getItem('currentSessionEmail');
+    currentSessionPassword &&
+      LogIn(currentSessionEmail, currentSessionPassword);
+  }, []);
+
+  const LogIn = (l_email, l_password) => {
     Axios.post(endpoint_login, {
-      email: LoginCredentials.email,
-      password: LoginCredentials.password
-    }).then(res => {
-      if (res.data.success) {
-        actions({
-          type: 'setState',
-          payload: { ...state, token: res.data.token }
-        });
-        navigate('/');
-      } else {
-        alert('Failed to log in, try again');
-      }
-    });
+      email: l_email,
+      password: l_password
+    })
+      .then(res => {
+        if (res.data.success) {
+          actions({
+            type: 'setState',
+            payload: { ...state, token: res.data.token }
+          });
+          navigate('/');
+        } else {
+          alert('Failed to log in, try again');
+        }
+      })
+      .then(() => {
+        localStorage.setItem('currentSessionEmail', LoginCredentials.email);
+        localStorage.setItem(
+          'currentSessionPassword',
+          LoginCredentials.password
+        );
+      });
   };
 
   return (
@@ -55,7 +70,13 @@ export const Login = () => {
           type='password'
           placeholder='Password'
         />
-        <st.LoginButton onClick={LogIn}>Login</st.LoginButton>
+        <st.LoginButton
+          onClick={() =>
+            LogIn(LoginCredentials.email, LoginCredentials.password)
+          }
+        >
+          Login
+        </st.LoginButton>
       </st.LoginBox>
     </st.MainLoginContainer>
   );
