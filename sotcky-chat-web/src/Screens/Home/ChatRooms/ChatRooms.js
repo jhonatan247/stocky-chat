@@ -21,6 +21,7 @@ export const ChatRooms = () => {
 
   useEffect(() => {
     let socket = socketIOClient(endpoint_socket);
+    actions({ type: 'setState', payload: { ...state, socket: socket } });
     setLocalSocket(socket);
     socket.on('chat-room-created', data => {
       GetNewItem(data);
@@ -28,10 +29,7 @@ export const ChatRooms = () => {
   }, [List]);
 
   const GetNewItem = data => {
-    let aux = [];
-    GetFirstChatRooms()
-      .then(res => setList(res.data.chatRooms))
-      .then(aux.push(data));
+    GetFirstChatRooms().then(res => setList(res.data.chatRooms));
   };
 
   const GetFirstChatRooms = () =>

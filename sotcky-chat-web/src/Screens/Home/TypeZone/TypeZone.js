@@ -14,18 +14,32 @@ export const TypeZone = () => {
   const [endpoint_list] = useState('http://192.168.0.14:3000/api/chat-rooms/');
   const [localSocket, setLocalSocket] = useState();
 
-  useEffect(() => GetMessageList().then(res => console.log(res.data)), []);
+  useEffect(() => {
+    state.room.id &&
+      GetMessageList().then(res => {
+        console.log(res.data.messages);
+        setMessageList(res.data.messages);
+      });
+  }, [state.room.id]);
 
   useEffect(() => {
-    let socket = socketIOClient(endpoint_socket);
-    setLocalSocket(socket);
-    socket.on(`message-created-on-${state.room.id}`, data => {
-      GetNewItem(data);
-    });
+    if (state.room.id) {
+      alert('HEHEHE');
+      let socket = socketIOClient(endpoint_socket);
+      setLocalSocket(socket);
+      socket.on('pepe', data => {
+        alert('ACTUALIZANDO');
+        GetNewItem(data);
+      });
+    }
   }, [MessageList]);
 
-  const GetNewItem = data => {
-    GetMessageList().then(res => setMessageList(res.data.chatRooms));
+  const GetNewItem = () => {
+    console.log('HHHHHHHH');
+    GetMessageList().then(res => {
+      console.log('AFTER SUBSCRIBE => ', res.data);
+      setMessageList(res.data.messages);
+    });
   };
 
   const GetMessageList = () =>
@@ -39,7 +53,14 @@ export const TypeZone = () => {
 
   const CheckSend = id => id === 13 && SendMessage();
 
-  const SendMessage = () => {};
+  const SendMessage = () => {
+    setMessage('');
+    localSocket.emit('send-message', {
+      token: state.token,
+      message: Message,
+      chatRoomId: state.room.id
+    });
+  };
 
   return (
     <st.MainTypeZoneContainer>
@@ -47,9 +68,22 @@ export const TypeZone = () => {
         <st.Name> {state.room.name || ''} </st.Name>
       </st.TitleBar>
 
+      <st.MessagesContainer>
+        {MessageList.map((message, index) => (
+          <st.SingleMessage
+            key={index}
+            self={message.owner === state.room.id ? true : false}
+          >
+            <st.MessageUserName>{message.account.name}</st.MessageUserName>
+            <st.MessageText>{message.message}</st.MessageText>
+          </st.SingleMessage>
+        ))}
+      </st.MessagesContainer>
+
       {state.room.name && (
         <st.TextTypeContainer onKeyDown={e => CheckSend(e.keyCode)}>
           <Input
+            value={Message}
             onChange={e => setMessage(e.target.value)}
             placeholder='Write a message'
           />
