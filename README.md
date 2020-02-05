@@ -50,8 +50,6 @@ Finally lets install a node process monitor for the development environment
 npm install -g nodemon
 ```
 
-To be able of track the location of the users on the database, you need to install [postgis](https://postgis.net/install/).
-
 
 
 ### Then, when the environment is prepared
