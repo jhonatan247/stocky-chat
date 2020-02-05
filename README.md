@@ -36,9 +36,9 @@ Finally the node module for sequelize
 npm install --save sequelize
 ```
 
-Now the database, which is [postgres](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)
+Now the database, which is [postgresql](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)
 
-We need a postgres module to get connected with node
+We need a postgresql module to get connected with node
 
 ```
 npm install --save pg pg-hstore
