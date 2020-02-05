@@ -143,7 +143,6 @@ export class Home extends Component {
         <ChatRooms
           chatRooms={chatRooms}
           onCreateChatRoom={name => {
-            alert(name);
             this.state.socket.emit('create-chat-room', {
               token: this.state.token,
               name: name
