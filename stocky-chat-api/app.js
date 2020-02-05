@@ -31,6 +31,7 @@ io.on('connection', socket => {
     });
     const requestData = response.data;
     socket.emit(`message-sended-to-${chatRoomId}`, requestData);
+    socket.broadcast.emit(`message-sended-to-${chatRoomId}`, requestData);
   });
   socket.on('create-chat-room', async ({ token, name }) => {
     const response = await axios({
@@ -43,6 +44,7 @@ io.on('connection', socket => {
     });
     const requestData = response.data;
     socket.emit('chat-room-created', requestData);
+    socket.broadcast.emit('chat-room-created', requestData);
   });
 });
 

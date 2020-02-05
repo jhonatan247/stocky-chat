@@ -27,8 +27,10 @@ export const Login = () => {
       if (res.data.success) {
         actions({
           type: 'setState',
-          payload: { ...state, token: res.data.token }
+          payload: { ...state, userData: res.data }
         });
+        localStorage.setItem('userId', res.data.id);
+
         navigate('/');
       } else {
         localStorage.removeItem('authorization');
@@ -44,10 +46,11 @@ export const Login = () => {
       if (res.data.success) {
         actions({
           type: 'setState',
-          payload: { ...state, token: res.data.token }
+          payload: { ...state, userData: res.data }
         });
 
         localStorage.setItem('authorization', res.data.token);
+        localStorage.setItem('userId', res.data.id);
         navigate('/');
       } else {
         alert('Failed to log in, try again');
@@ -85,6 +88,9 @@ export const Login = () => {
           }
         >
           Login
+        </st.LoginButton>
+        <st.LoginButton onClick={() => navigate('/signup')}>
+          Sign up
         </st.LoginButton>
       </st.LoginBox>
     </st.MainLoginContainer>

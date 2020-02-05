@@ -50,14 +50,15 @@ export const SingleMessage = styled.div`
   margin-bottom: 1em;
   border-radius: 5px;
   padding: 0.5em;
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.3);
 `;
 
 export const MessageUserName = styled.p`
   margin: 0;
-  color: #808080;
+  color: ${props => (!props.self ? '#808080' : 'white')};
 `;
 
 export const MessageText = styled.p`
-  color: #323232;
+  color: ${props => (!props.self ? '#323232' : 'white')};
   margin: 0.5em 0 0 0;
 `;

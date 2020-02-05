@@ -9,6 +9,7 @@ export const TypeZone = props => {
   const { state } = useContext(Context);
   const [MessageList, setMessageList] = useState([]);
   const [SelectedChatRoom, setSelectedChatRoom] = useState([]);
+  const [LocalUserId] = useState(parseInt(localStorage.getItem('userId')));
 
   const [Message, setMessage] = useState('');
   const ENTER_KEYWORD = 13;
@@ -19,6 +20,7 @@ export const TypeZone = props => {
     } else {
       setMessageList([]);
     }
+    console.log('USER ID => ', LocalUserId);
   }, [props.messages]);
 
   useEffect(() => {
@@ -35,21 +37,26 @@ export const TypeZone = props => {
     setMessage('');
     props.onSendMessage(Message);
   };
-
   return (
     <st.MainTypeZoneContainer>
       <st.TitleBar>
-        <st.Name> {state.room.name || ''} </st.Name>
+        <st.Name> {SelectedChatRoom.name || ''} </st.Name>
       </st.TitleBar>
 
       <st.MessagesContainer>
         {MessageList.map((message, index) => (
           <st.SingleMessage
             key={index}
-            self={message.owner === SelectedChatRoom.id ? true : false}
+            self={message.owner === LocalUserId ? true : false}
           >
-            <st.MessageUserName>{message.account.name}</st.MessageUserName>
-            <st.MessageText>{message.message}</st.MessageText>
+            <st.MessageUserName
+              self={message.owner === LocalUserId ? true : false}
+            >
+              {message.account.name}
+            </st.MessageUserName>
+            <st.MessageText self={message.owner === LocalUserId ? true : false}>
+              {message.message}
+            </st.MessageText>
           </st.SingleMessage>
         ))}
       </st.MessagesContainer>

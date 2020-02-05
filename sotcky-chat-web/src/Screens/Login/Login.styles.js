@@ -12,7 +12,7 @@ export const LoginBox = styled.div`
   padding: 2em;
   background: #404040;
   grid-column: 5/9;
-  grid-row: 4/8;
+  grid-row: 2/8;
   display: flex;
   flex-direction: column;
   justify-content: space-around;

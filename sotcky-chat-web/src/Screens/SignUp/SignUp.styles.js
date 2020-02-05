@@ -12,7 +12,7 @@ export const SignUpBox = styled.div`
   padding: 2em;
   background: #404040;
   grid-column: 5/9;
-  grid-row: 4/9;
+  grid-row: 2/9;
   display: flex;
   flex-direction: column;
   justify-content: space-around;

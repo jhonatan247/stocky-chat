@@ -4,7 +4,8 @@ import { useState } from 'react';
 const State = {
   token: '',
   socket: {},
-  room: {}
+  room: {},
+  userData: {}
 };
 
 const useGlobalState = () => {

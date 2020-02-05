@@ -46,7 +46,7 @@ export const CreateNewRoomButton = styled.div`
   justify-self: center;
   padding: 1em;
   position: fixed;
-
+  color: white;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
   cursor: pointer;
 `;

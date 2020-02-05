@@ -12,10 +12,8 @@ export const SignUp = () => {
     password: '',
     name: ''
   });
-  const [endpoint_signup] = useState(
-    'http://192.168.0.14:3000/api/auth/sign-up/'
-  );
-  const [endpoint_login] = useState('http://192.168.0.14:3000/api/auth/login/');
+  const [endpoint_signup] = useState('http://localhost:3000/api/auth/sign-up/');
+  const [endpoint_login] = useState('http://localhost:3000/api/auth/login/');
 
   useEffect(() => {
     let currentSessionPassword = localStorage.getItem('currentSessionPassword');
@@ -25,6 +23,9 @@ export const SignUp = () => {
   }, []);
 
   const Signup = () => {
+    if (LoginCredentials.password.length < 6) {
+      alert('Password must have more than 5 characters');
+    }
     Axios.post(endpoint_signup, {
       email: LoginCredentials.email,
       name: LoginCredentials.name,
@@ -32,8 +33,9 @@ export const SignUp = () => {
     })
       .then(() => LoginUser(LoginCredentials.email, LoginCredentials.password))
       .catch(err => {
-        console.log(err);
-        alert('Failed at user creation');
+        alert(
+          'Verify that the email address provided is valid. The email address provided may already be registered.'
+        );
       });
   };
 
@@ -47,6 +49,8 @@ export const SignUp = () => {
           type: 'setState',
           payload: { ...state, token: res.data.token }
         });
+        localStorage.setItem('userId', res.data.id);
+        localStorage.setItem('authorization', res.data.token);
         navigate('/');
       } else {
         alert('Failed to log in, try again');
@@ -65,14 +69,14 @@ export const SignUp = () => {
           onChange={e =>
             setLoginCredentials({ ...LoginCredentials, email: e.target.value })
           }
-          placeholder='Email'
+          placeholder="Email"
         />
 
         <Input
           onChange={e =>
             setLoginCredentials({ ...LoginCredentials, name: e.target.value })
           }
-          placeholder='Name'
+          placeholder="Name"
         />
 
         <Input
@@ -82,11 +86,14 @@ export const SignUp = () => {
               password: e.target.value
             })
           }
-          type='password'
-          placeholder='Password'
+          type="password"
+          placeholder="Password"
         />
 
         <st.LoginButton onClick={Signup}>Sign up</st.LoginButton>
+        <st.LoginButton onClick={() => navigate('/login')}>
+          Login
+        </st.LoginButton>
       </st.SignUpBox>
     </st.MainSignUpContainer>
   );
