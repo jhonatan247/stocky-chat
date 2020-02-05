@@ -11,7 +11,7 @@ export const Login = () => {
     email: '',
     password: ''
   });
-  const [authBaseURL] = useState('http://localhost:3000/api/auth');
+  const [authBaseURL] = useState('http://localhost:3001/api/auth');
 
   useEffect(() => {
     let authorization = localStorage.getItem('authorization');

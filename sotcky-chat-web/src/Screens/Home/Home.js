@@ -12,8 +12,8 @@ export class Home extends Component {
     this.state = {
       chatRooms: [],
       messages: [],
-      socketURL: 'http://localhost:3001/',
-      chatRoomsURL: 'http://localhost:3000/api/chat-rooms/',
+      socketURL: 'http://localhost:3002/',
+      chatRoomsURL: 'http://localhost:3001/api/chat-rooms/',
       response: false,
       globalState: {},
       token: null,

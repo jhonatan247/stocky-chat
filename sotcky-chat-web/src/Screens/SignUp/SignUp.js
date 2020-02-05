@@ -12,8 +12,8 @@ export const SignUp = () => {
     password: '',
     name: ''
   });
-  const [endpoint_signup] = useState('http://localhost:3000/api/auth/sign-up/');
-  const [endpoint_login] = useState('http://localhost:3000/api/auth/login/');
+  const [endpoint_signup] = useState('http://localhost:3001/api/auth/sign-up/');
+  const [endpoint_login] = useState('http://localhost:3001/api/auth/login/');
 
   useEffect(() => {
     let currentSessionPassword = localStorage.getItem('currentSessionPassword');
