@@ -1,4 +1,4 @@
-import React, { useEffect, Component, useContext } from 'react';
+import React, { Component } from 'react';
 import * as st from './Home.styles';
 import { ChatRooms } from './ChatRooms/ChatRooms';
 import { TypeZone } from './TypeZone/TypeZone';
@@ -30,9 +30,26 @@ export class Home extends Component {
     const socket = socketIOClient(socketURL);
     socket.on('chat-room-created', data => {
       if (data.success) {
-        this.state.chatRooms.push(data);
-        this.setState({ chatRooms: this.state.chatRooms });
+        var alreadyExist = false;
+        for (let i = 0; i < this.state.chatRooms.length; i++) {
+          if (this.state.chatRooms[i].id == data.id) {
+            alreadyExist = true;
+            break;
+          }
+        }
+        if (!alreadyExist) {
+          this.state.chatRooms.push(data);
+          this.setState({ chatRooms: this.state.chatRooms });
+        }
       }
+    });
+
+    socket.on('error-on-command', stockId => {
+      this.state.messages.push({
+        message: `An error has occurred, please check that the stock "${stockId}" is valid and try again`,
+        error: true
+      });
+      this.setState({ messages: this.state.messages });
     });
 
     this.setState({ socket });
@@ -76,8 +93,17 @@ export class Home extends Component {
       const self = this;
       this.state.socket.on(`message-sended-to-${chatRoom.id}`, data => {
         if (data.success && data.chatRoom == self.state.selectedChatRoom.id) {
-          this.state.messages.push(data);
-          this.setState({ messages: this.state.messages });
+          var alreadyExist = false;
+          for (let i = 0; i < this.state.messages.length; i++) {
+            if (this.state.messages[i].id == data.id) {
+              alreadyExist = true;
+              break;
+            }
+          }
+          if (!alreadyExist) {
+            this.state.messages.push(data);
+            this.setState({ messages: this.state.messages });
+          }
         }
       });
     }

@@ -28,7 +28,6 @@ module.exports.insertMessage = async function(
     const messageId = (
       await Message.create(messageData, { transaction: transaction })
     ).dataValues.id;
-    console.log((await selectMessageById(messageId)).dataValues);
     return (await selectMessageById(messageId)).dataValues;
   } catch (e) {
     console.log(e);

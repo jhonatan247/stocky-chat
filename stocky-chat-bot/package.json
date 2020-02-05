@@ -6,11 +6,13 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "amqplib": "^0.5.5",
     "axios": "^0.19.2",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.5",
     "csvtojson": "^2.0.10",
     "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
     "jsonwebtoken": "8.5.1",
@@ -20,6 +22,7 @@
     "pg-hstore": "^2.3.2",
     "sequelize": "^5.8.6",
     "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0",
     "ts-md5": "^1.2.4"
   },
   "devDependencies": {}

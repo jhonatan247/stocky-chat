@@ -19,4 +19,5 @@ module.exports.recognizeCommand = async function(stockId) {
       );
   });
   console.log(jsonData);
+  return jsonData;
 };

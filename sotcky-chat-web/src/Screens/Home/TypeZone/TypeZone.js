@@ -44,21 +44,29 @@ export const TypeZone = props => {
       </st.TitleBar>
 
       <st.MessagesContainer>
-        {MessageList.map((message, index) => (
-          <st.SingleMessage
-            key={index}
-            self={message.owner === LocalUserId ? true : false}
-          >
-            <st.MessageUserName
+        {MessageList.map((message, index) =>
+          message.error ? (
+            <st.SingleMessage key={index} self={true}>
+              <st.MessageText self={true}>{message.message}</st.MessageText>
+            </st.SingleMessage>
+          ) : (
+            <st.SingleMessage
+              key={index}
               self={message.owner === LocalUserId ? true : false}
             >
-              {message.account.name}
-            </st.MessageUserName>
-            <st.MessageText self={message.owner === LocalUserId ? true : false}>
-              {message.message}
-            </st.MessageText>
-          </st.SingleMessage>
-        ))}
+              <st.MessageUserName
+                self={message.owner === LocalUserId ? true : false}
+              >
+                {message.account.name}
+              </st.MessageUserName>
+              <st.MessageText
+                self={message.owner === LocalUserId ? true : false}
+              >
+                {message.message}
+              </st.MessageText>
+            </st.SingleMessage>
+          )
+        )}
       </st.MessagesContainer>
 
       {SelectedChatRoom && SelectedChatRoom.name && (

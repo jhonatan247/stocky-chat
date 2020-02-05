@@ -24,7 +24,6 @@ module.exports.createToken = async function(accountData) {
     const newAccountData = getPublicAccountData(account);
     newAccountData.token = null;
     const token = CryptographyAssistant.generateToken(newAccountData);
-    console.log(token);
     await account.update({ token: token });
     return getPublicAccountData(account);
   } else {
