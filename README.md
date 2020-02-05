@@ -61,7 +61,7 @@ _First, on each folder lets install the node dependencies_
 npm install
 ```
 
-_Before setup postgres, lets create a user_
+_Before setup postgresql, lets create a user_
 
 _for the development environment the default user is root and the default password is 1234_
 
