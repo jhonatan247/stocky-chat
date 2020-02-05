@@ -1,5 +1,6 @@
 const ChatRoom = require('../../../models').ChatRoom;
 const Message = require('../../../models').Message;
+let sequelize = require('../../../models').sequelize;
 
 module.exports.selectAll = async function() {
   return await ChatRoom.findAll();
@@ -23,17 +24,46 @@ module.exports.insertMessage = async function(
     message: message,
     status: 'active'
   };
-  return (await Message.create(messageData, { transaction: transaction }))
-    .dataValues;
+  try {
+    const messageId = (
+      await Message.create(messageData, { transaction: transaction })
+    ).dataValues.id;
+    console.log((await selectMessageById(messageId)).dataValues);
+    return (await selectMessageById(messageId)).dataValues;
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 module.exports.selectLastMessages = async function(chatRoomId) {
   const queryParameters = {
     chatRoom: chatRoomId
   };
-  return await Message.findAll({
-    where: queryParameters,
-    order: [['createdAt', 'DESC']],
-    limit: 50
-  });
+  return (
+    await Message.findAll({
+      attributes: ['id', 'message', 'owner', 'chatRoom'],
+      include: [
+        {
+          model: sequelize.models.AccountPublic,
+          as: 'account'
+        }
+      ],
+      where: queryParameters,
+      order: [['createdAt', 'DESC']],
+      limit: 50
+    })
+  ).reverse();
 };
+
+async function selectMessageById(messageId) {
+  return await Message.findOne({
+    attributes: ['id', 'message', 'owner', 'chatRoom'],
+    include: [
+      {
+        model: sequelize.models.AccountPublic,
+        as: 'account'
+      }
+    ],
+    where: { id: messageId }
+  });
+}

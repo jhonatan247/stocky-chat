@@ -5,61 +5,35 @@ import { Input } from 'antd';
 import Axios from 'axios';
 import socketIOClient from 'socket.io-client';
 
-export const TypeZone = () => {
-  const { state, actions } = useContext(Context);
+export const TypeZone = props => {
+  const { state } = useContext(Context);
   const [MessageList, setMessageList] = useState([]);
-  const [endpoint_socket] = useState('http://192.168.0.14:3001/');
+  const [SelectedChatRoom, setSelectedChatRoom] = useState([]);
 
   const [Message, setMessage] = useState('');
-  const [endpoint_list] = useState('http://192.168.0.14:3000/api/chat-rooms/');
-  const [localSocket, setLocalSocket] = useState();
+  const ENTER_KEYWORD = 13;
 
   useEffect(() => {
-    state.room.id &&
-      GetMessageList().then(res => {
-        console.log(res.data.messages);
-        setMessageList(res.data.messages);
-      });
-  }, [state.room.id]);
-
-  useEffect(() => {
-    if (state.room.id) {
-      alert('HEHEHE');
-      let socket = socketIOClient(endpoint_socket);
-      setLocalSocket(socket);
-      socket.on('pepe', data => {
-        alert('ACTUALIZANDO');
-        GetNewItem(data);
-      });
+    if (props.messages) {
+      setMessageList(props.messages);
+    } else {
+      setMessageList([]);
     }
-  }, [MessageList]);
+  }, [props.messages]);
 
-  const GetNewItem = () => {
-    console.log('HHHHHHHH');
-    GetMessageList().then(res => {
-      console.log('AFTER SUBSCRIBE => ', res.data);
-      setMessageList(res.data.messages);
-    });
-  };
+  useEffect(() => {
+    if (props.selectedChatRoom) {
+      setSelectedChatRoom(props.selectedChatRoom);
+    } else {
+      setSelectedChatRoom({});
+    }
+  }, [props.messages]);
 
-  const GetMessageList = () =>
-    Axios({
-      method: 'get',
-      url: endpoint_list + state.room.id,
-      headers: {
-        Authorization: state.token
-      }
-    });
-
-  const CheckSend = id => id === 13 && SendMessage();
+  const CheckSend = id => id === ENTER_KEYWORD && SendMessage();
 
   const SendMessage = () => {
     setMessage('');
-    localSocket.emit('send-message', {
-      token: state.token,
-      message: Message,
-      chatRoomId: state.room.id
-    });
+    props.onSendMessage(Message);
   };
 
   return (
@@ -72,7 +46,7 @@ export const TypeZone = () => {
         {MessageList.map((message, index) => (
           <st.SingleMessage
             key={index}
-            self={message.owner === state.room.id ? true : false}
+            self={message.owner === SelectedChatRoom.id ? true : false}
           >
             <st.MessageUserName>{message.account.name}</st.MessageUserName>
             <st.MessageText>{message.message}</st.MessageText>
@@ -80,12 +54,12 @@ export const TypeZone = () => {
         ))}
       </st.MessagesContainer>
 
-      {state.room.name && (
+      {SelectedChatRoom && SelectedChatRoom.name && (
         <st.TextTypeContainer onKeyDown={e => CheckSend(e.keyCode)}>
           <Input
             value={Message}
             onChange={e => setMessage(e.target.value)}
-            placeholder='Write a message'
+            placeholder="Write a message"
           />
         </st.TextTypeContainer>
       )}

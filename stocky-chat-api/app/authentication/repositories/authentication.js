@@ -21,7 +21,10 @@ module.exports.createToken = async function(accountData) {
     accountData.password + account.salt
   );
   if (encryptedPassword === account.encryptedPassword) {
-    const token = CryptographyAssistant.generateToken(accountData);
+    const newAccountData = getPublicAccountData(account);
+    newAccountData.token = null;
+    const token = CryptographyAssistant.generateToken(newAccountData);
+    console.log(token);
     await account.update({ token: token });
     return getPublicAccountData(account);
   } else {

@@ -54,6 +54,7 @@ module.exports.authenticate = async (req, res) => {
       ...accountData
     });
   } catch (error) {
+    console.log(error);
     res.status(400).json({
       success: false,
       message: error.message

@@ -20,19 +20,6 @@ app.use('/api/auth', AuthenticationRouter);
 app.use('/api/chat-rooms/', ChatRoomRouter);
 
 io.on('connection', socket => {
-  socket.on('create-chat-room', async ({ token, name }) => {
-    console.log(token);
-    const response = await axios({
-      method: 'post',
-      url: chatRoomsApiBaseURL,
-      data: {
-        name
-      },
-      headers: { Authorization: token }
-    });
-    const requestData = response.data;
-    socket.broadcast.emit('chat-room-created', requestData);
-  });
   socket.on('send-message', async ({ token, message, chatRoomId }) => {
     const response = await axios({
       method: 'post',
@@ -42,8 +29,20 @@ io.on('connection', socket => {
       },
       headers: { Authorization: token }
     });
-    requestData = response.data;
-    socket.broadcast.emit(`message-sended-to-${chatRoomId}`, requestData);
+    const requestData = response.data;
+    socket.emit(`message-sended-to-${chatRoomId}`, requestData);
+  });
+  socket.on('create-chat-room', async ({ token, name }) => {
+    const response = await axios({
+      method: 'post',
+      url: chatRoomsApiBaseURL,
+      data: {
+        name
+      },
+      headers: { Authorization: token }
+    });
+    const requestData = response.data;
+    socket.emit('chat-room-created', requestData);
   });
 });
 

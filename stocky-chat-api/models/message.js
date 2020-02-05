@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   Message.associate = function(models) {
+    Message.belongsTo(models.AccountPublic, {
+      foreignKey: 'owner',
+      as: 'account'
+    });
     // associations can be defined here
   };
   return Message;

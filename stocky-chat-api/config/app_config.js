@@ -4,5 +4,5 @@ module.exports = {
     origin: 'front-url',
     optionsSuccessStatus: 200
   },
-  timeToExpireSessionInHours: '1h'
+  timeToExpireSessionInHours: '10h'
 };

@@ -6,13 +6,7 @@ export const ChatRoomsList = props => {
   const { state, actions } = useContext(Context);
 
   const SetChatRoom = item => {
-    actions({
-      type: 'setState',
-      payload: {
-        ...state,
-        room: item
-      }
-    });
+    props.onSelelectChatRoom(item);
   };
 
   return props.chats.map((item, index) => (

@@ -40,13 +40,13 @@ export const MessagesContainer = styled.div`
 `;
 
 export const SingleMessage = styled.div`
-  background: ${props => (props.self ? 'white' : 'orange')};
+  background: ${props => (!props.self ? 'white' : 'orange')};
   color: #323232;
   width: fit-content;
   margin: 0;
   display: flex;
   flex-direction: column;
-  align-self: ${props => (props.self ? 'flex-start' : 'flex-end')};
+  align-self: ${props => (!props.self ? 'flex-start' : 'flex-end')};
   margin-bottom: 1em;
   border-radius: 5px;
   padding: 0.5em;

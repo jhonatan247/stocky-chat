@@ -11,38 +11,48 @@ export const Login = () => {
     email: '',
     password: ''
   });
-  const [endpoint_login] = useState('http://192.168.0.14:3000/api/auth/login/');
+  const [authBaseURL] = useState('http://localhost:3000/api/auth');
 
   useEffect(() => {
-    let currentSessionPassword = localStorage.getItem('currentSessionPassword');
-    let currentSessionEmail = localStorage.getItem('currentSessionEmail');
-    currentSessionPassword &&
-      LogIn(currentSessionEmail, currentSessionPassword);
+    let authorization = localStorage.getItem('authorization');
+    authorization && LogInWithToken(authorization);
   }, []);
 
+  const LogInWithToken = token => {
+    Axios({
+      method: 'post',
+      url: authBaseURL + '/login-with-token',
+      headers: { Authorization: token }
+    }).then(res => {
+      if (res.data.success) {
+        actions({
+          type: 'setState',
+          payload: { ...state, token: res.data.token }
+        });
+        navigate('/');
+      } else {
+        localStorage.removeItem('authorization');
+      }
+    });
+  };
+
   const LogIn = (l_email, l_password) => {
-    Axios.post(endpoint_login, {
+    Axios.post(authBaseURL + '/login', {
       email: l_email,
       password: l_password
-    })
-      .then(res => {
-        if (res.data.success) {
-          actions({
-            type: 'setState',
-            payload: { ...state, token: res.data.token }
-          });
-          navigate('/');
-        } else {
-          alert('Failed to log in, try again');
-        }
-      })
-      .then(() => {
-        localStorage.setItem('currentSessionEmail', LoginCredentials.email);
-        localStorage.setItem(
-          'currentSessionPassword',
-          LoginCredentials.password
-        );
-      });
+    }).then(res => {
+      if (res.data.success) {
+        actions({
+          type: 'setState',
+          payload: { ...state, token: res.data.token }
+        });
+
+        localStorage.setItem('authorization', res.data.token);
+        navigate('/');
+      } else {
+        alert('Failed to log in, try again');
+      }
+    });
   };
 
   return (
@@ -57,9 +67,8 @@ export const Login = () => {
           onChange={e =>
             setLoginCredentials({ ...LoginCredentials, email: e.target.value })
           }
-          placeholder='Email'
+          placeholder="Email"
         />
-
         <Input
           onChange={e =>
             setLoginCredentials({
@@ -67,8 +76,8 @@ export const Login = () => {
               password: e.target.value
             })
           }
-          type='password'
-          placeholder='Password'
+          type="password"
+          placeholder="Password"
         />
         <st.LoginButton
           onClick={() =>
